@@ -26,6 +26,34 @@ pub fn serialize_to_file<T: serde::Serialize>(el: &T, filename: &Path) {
     serde_json::to_writer_pretty(&mut dst, el).unwrap();
 }
 
+fn save_intermediate_proofs(
+    tmp_dir: &Option<String>,
+    stage_dir: &str,
+    proof_list: &ProofList,
+    proof_metadata: &ProofMetadata,
+) {
+    use std::path::PathBuf;
+
+    let output_root = tmp_dir
+        .as_ref()
+        .map(PathBuf::from)
+        .unwrap_or_else(|| PathBuf::from("tmp"));
+    let output_dir = output_root.join(stage_dir);
+    if !output_dir.exists() {
+        fs::create_dir_all(&output_dir).expect("Failed to create tmp dir");
+    }
+
+    let timer = std::time::Instant::now();
+    proof_list.write_to_directory(&output_dir);
+    serialize_to_file(proof_metadata, &output_dir.join("metadata.json"));
+    let elapsed = timer.elapsed().as_secs_f64();
+
+    println!(
+        "**** Intermediate proofs saved in {:.3}s (Non-critical I/O time) ****",
+        elapsed
+    );
+}
+
 /// Default amount of cycles, if no flag is set.
 pub const DEFAULT_CYCLES: usize = 32_000_000;
 
@@ -122,6 +150,14 @@ pub fn create_proofs(
         &mut total_proof_time,
     );
 
+    save_intermediate_proofs(tmp_dir, "base", &proof_list, &proof_metadata);
+
+    // If need to stop after generating and saving the base proofs, uncomment this part.
+    // if proof_list.basic_proofs.len() > 0 {
+    //     println!("Base proofs were saved to tmp_dir. Stopping early by request.");
+    //     std::process::exit(0);
+    // }
+
     // Now we finished 'basic' proving - check if there is a need for recursion.
     if let Some(until) = until {
         assert_eq!(
@@ -130,14 +166,6 @@ pub fn create_proofs(
             "Recursion is only supported after Standard machine"
         );
 
-        if let Some(tmp_dir) = tmp_dir {
-            let base_tmp_dir = Path::new(tmp_dir).join("base");
-            if !base_tmp_dir.exists() {
-                fs::create_dir_all(&base_tmp_dir).expect("Failed to create tmp dir");
-            }
-            proof_list.write_to_directory(&base_tmp_dir);
-            serialize_to_file(&proof_metadata, &base_tmp_dir.join("metadata.json"))
-        }
         let (recursion_proof_list, recursion_proof_metadata) = create_recursion_proofs(
             proof_list,
             proof_metadata,
@@ -533,14 +561,12 @@ pub fn create_recursion_proofs(
             total_proof_time,
         );
 
-        if let Some(tmp_dir) = tmp_dir {
-            let base_tmp_dir = Path::new(tmp_dir).join(format!("recursion_{}", recursion_level));
-            if !base_tmp_dir.exists() {
-                fs::create_dir_all(&base_tmp_dir).expect("Failed to create tmp dir");
-            }
-            current_proof_list.write_to_directory(&base_tmp_dir);
-            serialize_to_file(&current_proof_metadata, &base_tmp_dir.join("metadata.json"))
-        }
+        save_intermediate_proofs(
+            tmp_dir,
+            &format!("recursion_{}", recursion_level),
+            &current_proof_list,
+            &current_proof_metadata,
+        );
 
         recursion_level += 1;
 
@@ -621,14 +647,12 @@ pub fn create_final_proofs(
             gpu_shared_state,
             total_proof_time,
         );
-        if let Some(tmp_dir) = tmp_dir {
-            let base_tmp_dir = Path::new(tmp_dir).join(format!("final_{}", final_proof_level));
-            if !base_tmp_dir.exists() {
-                fs::create_dir_all(&base_tmp_dir).expect("Failed to create tmp dir");
-            }
-            current_proof_list.write_to_directory(&base_tmp_dir);
-            serialize_to_file(&current_proof_metadata, &base_tmp_dir.join("metadata.json"))
-        }
+        save_intermediate_proofs(
+            tmp_dir,
+            &format!("final_{}", final_proof_level),
+            &current_proof_list,
+            &current_proof_metadata,
+        );
 
         if recursion_mode.finish_second_recursion_layer(&current_proof_metadata, final_proof_level)
         {
