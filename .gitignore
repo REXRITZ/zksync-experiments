@@ -1,0 +1,34 @@
+# Common
+.DS_Store
+**/.DS_Store
+.idea
+/venv/
+/tmp/
+.codex
+
+# zksync-airbender
+zksync-airbender/.idea
+zksync-airbender/target
+zksync-airbender/output
+rustc-ice-*.*
+
+# zksync-os
+zksync-os/target
+zksync-os/Cargo.lock
+
+zksync-os/instances_examples/test_contracts/node_modules
+zksync-os/instances_examples/test_contracts/cache
+zksync-os/instances_examples/test_contracts/artifacts
+
+zksync-os/tests/contracts_wasm/*/target
+zksync-os/tests/contracts_wasm/*/out.wat
+
+# Assuming solidity is managed by hardhat
+zksync-os/tests/contracts_sol/*/.env
+zksync-os/tests/contracts_sol/*/artifacts
+zksync-os/tests/contracts_sol/*/cache
+zksync-os/tests/contracts_sol/*/ignition
+zksync-os/tests/contracts_sol/*/node_modules
+
+zksync-os/tests/instances/*/*.svg
+zksync-os/tests/instances/**/*.bench

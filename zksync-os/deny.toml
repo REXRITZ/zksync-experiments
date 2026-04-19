@@ -1,0 +1,71 @@
+[advisories]
+#TODO(EVM-1050): replace unmaintained ethers dependency in rig
+ignore = [
+    { id = "RUSTSEC-2025-0009", reason = "We do not rely on impacted functionality. Affected crate is used only in tests" }
+]
+
+[bans]
+multiple-versions = "warn"
+deny = []
+skip = []
+skip-tree = []
+
+workspace-default-features = "allow"
+external-default-features = "allow"
+
+[sources]
+unknown-registry = "warn"
+unknown-git = "warn"
+allow-git = ["https://github.com/matter-labs/zksync-airbender"]
+
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+
+[licenses]
+# We want really high confidence when inferring licenses from text
+confidence-threshold = 0.93
+allow = [
+    "Apache-2.0",
+    "Apache-2.0 WITH LLVM-exception",
+    "MIT",
+    "MPL-2.0",
+    "BSD-3-Clause",
+    "BSD-2-Clause",
+    "0BSD",
+    "ISC",
+    "Unicode-3.0",
+    "Zlib",
+    "Unlicense",
+    "CDLA-Permissive-2.0",
+    "CDDL-1.0",
+]
+exceptions = [
+    # CC0 is a bit unclear about source code: https://tldrlegal.com/license/creative-commons-cc0-1.0-universal
+    { allow = ["CC0-1.0"], name = "tiny-keccak" },
+    { allow = ["CC0-1.0"], name = "secp256k1-sys" },
+    { allow = ["CC0-1.0"], name = "secp256k1" },
+    { allow = ["OpenSSL"], crate = "ring" },
+]
+
+# Sigh
+[[licenses.clarify]]
+crate = "ring"
+# SPDX considers OpenSSL to encompass both the OpenSSL and SSLeay licenses
+# https://spdx.org/licenses/OpenSSL.html
+# ISC - Both BoringSSL and ring use this for their new files
+# MIT - "Files in third_party/ have their own licenses, as described therein. The MIT
+# license, for third_party/fiat, which, unlike other third_party directories, is
+# compiled into non-test libraries, is included below."
+# OpenSSL - Obviously
+expression = "ISC AND MIT AND OpenSSL"
+license-files = [{ path = "LICENSE", hash = 0xbd0eed23 }]
+
+[[licenses.clarify]]
+crate = "webpki"
+expression = "ISC"
+license-files = [{ path = "LICENSE", hash = 0x001c7e6c }]
+
+# Actually "ISC-style"
+[[licenses.clarify]]
+crate = "rustls-webpki"
+expression = "ISC"
+license-files = [{ path = "LICENSE", hash = 0x001c7e6c }]

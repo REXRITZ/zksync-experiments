@@ -1,0 +1,10 @@
+[package]
+name = "fuzzer"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]
+members = ["fuzz"]
+
+[dependencies]
+ruint = { version = "1.16", default-features = false }

@@ -1,0 +1,19 @@
+#![cfg_attr(not(feature = "testing"), no_std)]
+#![allow(incomplete_features)]
+#![feature(generic_const_exprs)]
+#![feature(allocator_api)]
+#![feature(btreemap_alloc)]
+#![feature(const_trait_impl)]
+#![allow(clippy::new_without_default)]
+#![allow(clippy::needless_lifetimes)]
+#![allow(clippy::needless_borrow)]
+#![allow(clippy::needless_borrows_for_generic_args)]
+#![allow(clippy::bool_comparison)]
+#![allow(clippy::type_complexity)]
+#![allow(clippy::too_many_arguments)]
+#![allow(clippy::result_unit_err)]
+#![allow(clippy::explicit_auto_deref)]
+
+extern crate alloc;
+
+pub mod common_structs;

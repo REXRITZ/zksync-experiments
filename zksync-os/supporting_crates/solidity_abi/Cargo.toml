@@ -1,0 +1,18 @@
+[package]
+name = "solidity_abi"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+homepage.workspace = true
+repository.workspace = true
+license.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[dependencies]
+ruint = { version = "1.12.3", default-features = false, features = ["alloc"] }
+solidity_abi_derive = { path = "../solidity_abi_derive"}
+const_keccak256 = { path = "../keccak"}
+
+[dev-dependencies]
+hex = "*"
