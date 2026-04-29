@@ -66,6 +66,7 @@ for block_number in "${BLOCKS[@]}"; do
           --bin ../../../zksync-os/zksync_os/evm_replay.bin \
           --input-file $WITNESS_DIR/${block_number}_witness \
           --until final-recursion \
+          --tmp-dir $BLOCK_OUTPUT_DIR \
           --output-dir $BLOCK_OUTPUT_DIR \
           --gpu \
           --cycles 500000000 >> $BLOCK_OUTPUT_DIR/output.txt 2>&1
