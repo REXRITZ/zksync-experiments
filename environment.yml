@@ -1,0 +1,46 @@
+name: venv
+channels:
+  - nvidia
+  - conda-forge
+  - defaults
+
+dependencies:
+  # Python (optional, but useful for conda env)
+  - python=3.10
+  - pip
+
+  # Equivalent of build-essential
+  - gcc_linux-64=11
+  - gxx_linux-64=11
+  - make
+
+  # CMake (your Docker overrides apt version to 3.29.3)
+  - cmake=3.29
+
+  # pkg-config
+  - pkg-config
+
+  # clang
+  - clang
+
+  # libssl-dev equivalent
+  - openssl
+
+  # certificates
+  - ca-certificates
+
+  # git / curl
+  - git
+  - curl
+
+  # CUDA toolkit equivalent
+  - cuda-toolkit=12.8
+
+  # Common libraries usually needed
+  - zlib
+  - bzip2
+  - xz
+  - libffi
+
+  - pip:
+      # optional Python packages

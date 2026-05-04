@@ -5,6 +5,8 @@
 /venv/
 /tmp/
 .codex
+/logs/
+block_proof_metrics.csv
 
 # zksync-airbender
 zksync-airbender/.idea
