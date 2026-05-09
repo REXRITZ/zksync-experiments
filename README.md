@@ -25,7 +25,16 @@ Proving an Ethereum block is a 3-step process:
 ## Creating virtual environment
 Use the following command to create conda virtual enviroment
 ```bash
-    conda create --name <environment_name> --file requirements.txt
+    conda env create -f environment.yml --name <environment_name>
+```
+Add following paths if cargo build for proving using gpu fails:
+```bash
+  export CUDA_HOME=$CONDA_PREFIX
+  export CUDA_PATH=$CONDA_PREFIX
+  export PATH=$CUDA_HOME/bin:$PATH
+  export LD_LIBRARY_PATH=$CUDA_HOME/lib:$LD_LIBRARY_PATH
+  export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
+  export LIBRARY_PATH=$CONDA_PREFIX/lib:$CONDA_PREFIX/lib:$LIBRARY_PATH
 ```
 
 
