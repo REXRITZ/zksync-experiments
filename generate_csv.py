@@ -22,8 +22,8 @@ def parse_single_block_file(file_path):
         block_id = block_id_match.group(1) if block_id_match else filename
 
     # 2. Extract Total single_run execution (Witness time)
-    single_run_match = re.search(r"Total single_run execution took: ([\d\.]+\w+)", content)
-    single_run_time = single_run_match.group(1) if single_run_match else "N/A"
+    # single_run_match = re.search(r"Total single_run execution took: ([\d\.]+\w+)", content)
+    # single_run_time = single_run_match.group(1) if single_run_match else "N/A"
 
     # 3. Extract Total critical path
     critical_path_match = re.search(r"Total time on production critical path ([\d\.]+s)", content)
@@ -59,7 +59,7 @@ def parse_single_block_file(file_path):
             "Log23 Proofs": log23,
             "Delegation Proofs": delegation,
             "Gas used": gas_used,
-            "Witness Execution Time": single_run_time,
+            # "Witness Execution Time": single_run_time,
             "Total Critical Path": critical_path_time if i == len(proof_matches) - 1 else ""
         })
 

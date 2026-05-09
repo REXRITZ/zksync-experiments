@@ -508,6 +508,8 @@ fn verify_proof(proof_path: &String) {
 
     verifier_common::prover::nd_source_std::set_iterator(it);
 
+    use std::time::Instant;
+    let verification_started_at = Instant::now();
     match circuit_type {
         CircuitType::RiscV => unsafe {
             risc_v_cycles_verifier::verify(
@@ -530,6 +532,11 @@ fn verify_proof(proof_path: &String) {
             };
         }
     }
+    let verification_elapsed = verification_started_at.elapsed();
+    println!(
+        "Proof verification time: {:.3} ms",
+        verification_elapsed.as_secs_f64() * 1_000.0
+    );
     println!("PROOF IS VALID");
 }
 
@@ -595,14 +602,27 @@ fn verify_all(metadata_path: &String) {
 
     verifier_common::prover::nd_source_std::set_iterator(it);
 
+    use std::time::Instant;
     if metadata.basic_proof_count > 0 {
         assert_eq!(metadata.reduced_proof_count, 0);
+        let verification_started_at = Instant::now();
         let output = full_statement_verifier::verify_base_layer();
+        let verification_elapsed = verification_started_at.elapsed();
+        println!(
+            "Proof verification time: {:.3} ms",
+            verification_elapsed.as_secs_f64() * 1_000.0
+        );
         println!("Output is: {:?}", output);
     } else if metadata.reduced_proof_count > 0 {
         println!("Running continue recursive");
         assert!(metadata.reduced_proof_count > 0);
+        let verification_started_at = Instant::now();
         let output = full_statement_verifier::verify_recursion_layer();
+        let verification_elapsed = verification_started_at.elapsed();
+        println!(
+            "Proof verification time: {:.3} ms",
+            verification_elapsed.as_secs_f64() * 1_000.0
+        );
         println!("Output is: {:?}", output);
     } else if metadata.reduced_log_23_proof_count > 0 {
         todo!("not implemented yet");
@@ -631,7 +651,14 @@ fn verify_all_program_proof(program_proof_path: &String) {
     // Assume that program proof has only recursion proofs.
     println!("Running continue recursive");
     assert!(metadata.reduced_proof_count > 0);
+    use std::time::Instant;
+    let verification_started_at = Instant::now();
     let output = full_statement_verifier::verify_recursion_layer();
+    let verification_elapsed = verification_started_at.elapsed();
+    println!(
+        "Proof verification time: {:.3} ms",
+        verification_elapsed.as_secs_f64() * 1_000.0
+    );
     println!("Output is: {:?}", output);
 
     assert!(

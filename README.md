@@ -136,5 +136,9 @@ You can visually verify the validity of your generated proof by uploading this J
 
 To verify locally, run following command inside zksync-airbender/tools/cli directory
 ```bash
-    time cargo run --profile cli --features include_verifiers verify --proof ../../../tmp/output/19299000/reduced_proof_0.json
+  cargo run --profile cli --features include_verifiers verify --proof <path-to-proof.json>
+```
+To verify all proofs using metadata.json:
+```bash
+  cargo run --profile cli --features include_verifiers verify-all --metadata <path-to-metdata.json>
 ```

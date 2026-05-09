@@ -65,7 +65,7 @@ for block_number in "${BLOCKS[@]}"; do
     cargo run -p cli --release --features gpu prove \
           --bin ../../../zksync-os/zksync_os/evm_replay.bin \
           --input-file $WITNESS_DIR/${block_number}_witness \
-          --until final-recursion \
+          --until final-proof \
           --tmp-dir $BLOCK_OUTPUT_DIR \
           --output-dir $BLOCK_OUTPUT_DIR \
           --gpu \
