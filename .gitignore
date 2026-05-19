@@ -7,6 +7,7 @@
 .codex
 /logs/
 block_proof_metrics.csv
+gpu_usage.csv
 
 # zksync-airbender
 zksync-airbender/.idea

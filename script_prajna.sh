@@ -22,4 +22,12 @@ export LD_LIBRARY_PATH=$CUDA_HOME/lib:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
 export LIBRARY_PATH=$CONDA_PREFIX/lib:$CONDA_PREFIX/lib:$LIBRARY_PATH
 
+nvidia-smi \
+  --query-gpu=timestamp,index,name,utilization.gpu,utilization.memory,memory.used,memory.total,temperature.gpu,power.draw \
+  --format=csv -l 1 > gpu_usage.csv &
+pid=$!
+
 ./script_docker.sh
+
+kill $pid
+
