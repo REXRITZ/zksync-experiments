@@ -151,3 +151,6 @@ To verify all proofs using metadata.json:
 ```bash
   cargo run --profile cli --features include_verifiers verify-all --metadata <path-to-metdata.json>
 ```
+
+## How to increase segment/domain size?
+Follow the steps present in [Increase domain guide](increase_domain.md) as a sample to increase the segment size at base layer for proving.
